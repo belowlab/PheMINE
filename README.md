@@ -57,16 +57,21 @@ This project uses [Snakemake](https://snakemake.readthedocs.io/) to manage the a
 
    This will:
    - Find matched controls for your cases
-   - Perform phecode enrichment analysis with permutation
+   - Perform feature selection (either permutation-based enrichment or PheWAS using PheTK, depending on the `feature_selection_method` configuration)
    - Generate enrichment reports
    - Train a PheML model
 
 4. **View results**  
    Output files will be saved in the directory specified by `results_dir` in `config.yaml`. Key outputs include:
    - `case_control_pairs.txt`: Matched case-control pairs
-   - `{output_prefix}.counts_and_pval.txt`: Phecode enrichment results
-   - `{trait}_{output_prefix}_enriched_phecode.csv`: Enriched phecodes
+   - `{output_prefix}.counts_and_pval.txt` (or `_phewas_results.tsv`): Phecode enrichment or PheWAS results
+   - `{trait}_{output_prefix}_enriched_phecode.csv` (or `_phewas_enriched_phecode.csv`): Enriched phecodes
    - `PheML_{output_prefix}.model`: Trained model
+
+## Feature Selection Methods
+The pipeline supports two methods for identifying significant phecodes to use as features, configurable via `feature_selection_method` in `config.yaml`:
+- **Enrichment** (`enrichment`): Uses permutation testing to calculate significance between cases and controls.
+- **PheWAS** (`phewas`): Uses the PheTK package to employ logistic regression, accounting for covariates like age and sex, to identify significant associations.
 
 ## Machine Learning Models
 The pipeline currently supports the following machine learning models, which can be selected via the `model_type` parameter in `config.yaml`:

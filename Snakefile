@@ -25,11 +25,17 @@ MODEL_TYPE = config.get("model_type", 'RF')
 USE_MATCHED_CONTROLS = config.get("use_matched_controls", 0)
 N_CONTROLS_PER_CASE = config.get("n_controls_per_case", 5)
 
+FEATURE_SELECTION_METHOD = config.get("feature_selection_method", "enrichment")
+
+if FEATURE_SELECTION_METHOD == "phewas":
+    ENRICHED_PHECODE_FILE = f"{RESULTS_DIR}/{TRAIT}_{OUTPUT_PREFIX}_phewas_enriched_phecode.csv"
+else:
+    ENRICHED_PHECODE_FILE = f"{RESULTS_DIR}/{TRAIT}_{OUTPUT_PREFIX}_enriched_phecode.csv"
+
 rule all:
     input:
         f"{RESULTS_DIR}/case_control_pairs_{OUTPUT_PREFIX}_train.txt",
-        f"{RESULTS_DIR}/{OUTPUT_PREFIX}.counts_and_pval.txt",
-        f"{RESULTS_DIR}/{TRAIT}_{OUTPUT_PREFIX}_enriched_phecode.csv",
+        ENRICHED_PHECODE_FILE,
         f"{RESULTS_DIR}/PheML_{MODEL_TYPE}_{OUTPUT_PREFIX}.model"
     conda:
         "environment.yaml"
@@ -99,9 +105,30 @@ rule phecode_enrichment_generate_reports:
             --input_prefix {params.input_prefix}
         """
 
+rule phewas_feature_selection:
+    input:
+        case_control_pairs=f"{RESULTS_DIR}/case_control_pairs_{OUTPUT_PREFIX}_train.txt"
+    output:
+        f"{RESULTS_DIR}/{TRAIT}_{OUTPUT_PREFIX}_phewas_enriched_phecode.csv"
+    params:
+        output_path=RESULTS_DIR,
+        output_prefix=OUTPUT_PREFIX,
+        trait=TRAIT,
+        control_fn=f"{RESULTS_DIR}/case_control_pairs_{OUTPUT_PREFIX}_train.txt"
+    conda:
+        "environment.yaml"
+    shell:
+        """
+        python src/phewas_feature_selection.py \
+            --control_fn {params.control_fn} \
+            --output_path {params.output_path} \
+            --output_prefix {params.output_prefix} \
+            --trait {params.trait}
+        """
+
 rule pheML_develop:
     input:
-        enriched_phecode=f"{RESULTS_DIR}/{TRAIT}_{OUTPUT_PREFIX}_enriched_phecode.csv"
+        enriched_phecode=ENRICHED_PHECODE_FILE
     output:
         f"{RESULTS_DIR}/PheML_{MODEL_TYPE}_{OUTPUT_PREFIX}.model"
     params:

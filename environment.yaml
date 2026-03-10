@@ -24,3 +24,4 @@ dependencies:
       - snakemake==9.13.7
       - xgboost==3.1.2
       - optuna==4.6.0
+      - phetk==0.2.3

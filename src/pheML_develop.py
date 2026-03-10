@@ -146,8 +146,14 @@ def get_phecode_features(
             excluded_code.extend(phecodes_to_exclude)
     
     # Get enriched phecode
-    enrich_results = pd.read_csv(output_path / f'{trait}_{prefix}_enriched_phecode.csv', sep='\t', dtype={'Phecode':str})
-    enrich_results = enrich_results[enrich_results.Count > number_of_cases * min_phecode_frequency] # Remove those phecodes that has counts less than the cutoff frequency of case number, regardless of significance
+    feature_method = config.get('feature_selection_method', 'enrichment')
+    if feature_method == 'phewas':
+        enrich_file = output_path / f'{trait}_{prefix}_phewas_enriched_phecode.csv'
+    else:
+        enrich_file = output_path / f'{trait}_{prefix}_enriched_phecode.csv'
+    enrich_results = pd.read_csv(enrich_file, sep='\t', dtype={'Phecode':str})
+    if 'Count' in enrich_results.columns:
+        enrich_results = enrich_results[enrich_results.Count > number_of_cases * min_phecode_frequency] # Remove those phecodes that has counts less than the cutoff frequency of case number, regardless of significance
     phecode_features = enrich_results.Phecode.astype(str).unique().tolist()
     
     excluded_set = set(excluded_code)

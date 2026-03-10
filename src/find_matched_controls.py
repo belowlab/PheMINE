@@ -66,7 +66,9 @@ def process_args() -> argparse.Namespace:
     args = parser.parse_args()
 
     # Record arguments used
-    fn_log = Path(f'{args.result_path}/get_matched_controls.log')
+    output_dir = Path(args.result_path)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    fn_log = output_dir / 'get_matched_controls.log'
     setup_log(fn_log, mode='w')
 
     # Record script used
