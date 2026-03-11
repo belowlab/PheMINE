@@ -13,6 +13,7 @@ n_controls_per_case: 5 # Number of controls to use per case
 train_split_ratio: 0.8 # Proportion of matched pairs allocated to the training split
 min_phecode_frequency: 0 # Minimum frequency of a phecode to be included as a feature
 feature_selection_method: enrichment # Feature selection method, choose from enrichment or phewas
+phewas_exposure_phecodes: [] # Optional phecodes defining the phenotype exposure for phe-phewas; falls back to excluded_codes
 excluded_codes: # List of ICD codes and Phecodes to exclude from the ML pipeline (these are typically used for phenotyping)
   ICD:
     # - '307.1'

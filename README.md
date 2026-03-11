@@ -43,7 +43,7 @@ conda activate PheMINE  # On Linux/Mac
 This project uses [Snakemake](https://snakemake.readthedocs.io/) to manage the analysis workflow. The main steps are:
 
 1. **Configure your analysis**  
-   Edit `config.yaml` to set your trait of interest, minimum ICD code count, input/output directories, and output prefix.
+   Edit `config.yaml` to set your trait of interest, minimum ICD code count, input/output directories, and output prefix. When using `feature_selection_method: phewas`, set `phewas_exposure_phecodes` or populate `excluded_codes` with the phenotyping phecodes used as the exposure.
 
 2. **Prepare your input data**  
    Place your input data files in the directory specified by `data_dir` in `config.yaml`.
@@ -71,7 +71,7 @@ This project uses [Snakemake](https://snakemake.readthedocs.io/) to manage the a
 ## Feature Selection Methods
 The pipeline supports two methods for identifying significant phecodes to use as features, configurable via `feature_selection_method` in `config.yaml`:
 - **Enrichment** (`enrichment`): Uses permutation testing to calculate significance between cases and controls.
-- **PheWAS** (`phewas`): Uses the PheTK package to employ logistic regression, accounting for covariates like age and sex, to identify significant associations.
+- **PheWAS** (`phewas`): Uses the PheTK package to run a phenotype-to-phenome scan, treating a configured phenotype exposure as the independent variable and identifying comorbid or downstream phecodes.
 
 ## Machine Learning Models
 The pipeline currently supports the following machine learning models, which can be selected via the `model_type` parameter in `config.yaml`:

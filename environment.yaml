@@ -6,7 +6,8 @@ dependencies:
   - python=3.11.9
   - pip
   - pip:
-      - numpy==2.3.5
+      # phetk 0.2.3 requires numpy<2.0, so keep the stack on the latest 1.x line.
+      - numpy==1.26.4
       - pandas==2.3.3
       - polars==1.35.2
       - scipy==1.16.3
@@ -20,7 +21,8 @@ dependencies:
       - black==25.11.0
       - flake8==7.3.0 
       - pyarrow==22.0.0
-      - shap==0.50.0
+      # shap 0.50.0 requires numpy>=2; 0.46.0 remains compatible with numpy 1.26.x.
+      - shap==0.46.0
       - snakemake==9.13.7
       - xgboost==3.1.2
       - optuna==4.6.0

@@ -356,19 +356,27 @@ def interpret_model(
     # Extract feature columns (assumes first col is 'grid', last is 'label')
     X_phecode = data.iloc[:, 1:-1].copy()
 
-    # Add descriptions to feature columns using phecode_map (if available)
-    X_phecode.columns = [
+    # Keep model inputs aligned with training feature names and store
+    # separate display labels for SHAP visualizations.
+    feature_labels = [
         f"{col} ({phecode_map[col]})" if col in phecode_map else col
         for col in X_phecode.columns
     ]
 
-    # Use SHAP to explain the model's predictions
+    # Use a tree-specific explainer when possible. For non-tree classifiers,
+    # explain class probabilities against the feature matrix so the returned
+    # SHAP values preserve the class axis used below.
     if model_type=='tree':
         print('Using tree explainer')
         explainer = shap.TreeExplainer(model)
+    elif hasattr(model, 'predict_proba'):
+        explainer = shap.Explainer(model.predict_proba, X_phecode)
     else:
-        explainer = shap.Explainer(model)
+        raise TypeError(
+            "Non-tree models must implement predict_proba() for SHAP interpretation."
+        )
     shap_values = explainer(X_phecode)
+    shap_values.feature_names = feature_labels
 
     idx = find_index_of_grid(data, grid)
     if idx is None and plot == 'waterfall':
