@@ -105,7 +105,7 @@ rule phecode_enrichment_generate_reports:
             --input_prefix {params.input_prefix}
         """
 
-rule phewas_feature_selection:
+rule phe_phewas_feature_selection:
     input:
         case_control_pairs=f"{RESULTS_DIR}/case_control_pairs_{OUTPUT_PREFIX}_train.txt"
     output:
@@ -119,7 +119,7 @@ rule phewas_feature_selection:
         "environment.yaml"
     shell:
         """
-        python src/phewas_feature_selection.py \
+        python src/phe_phewas_feature_selection.py \
             --control_fn {params.control_fn} \
             --output_path {params.output_path} \
             --output_prefix {params.output_prefix} \

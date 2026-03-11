@@ -57,21 +57,21 @@ This project uses [Snakemake](https://snakemake.readthedocs.io/) to manage the a
 
    This will:
    - Find matched controls for your cases
-   - Perform feature selection (either permutation-based enrichment or PheWAS using PheTK, depending on the `feature_selection_method` configuration)
+   - Perform feature selection (either permutation-based enrichment or a Polars + sklearn Phe-PheWAS scan, depending on the `feature_selection_method` configuration)
    - Generate enrichment reports
    - Train a PheML model
 
 4. **View results**  
    Output files will be saved in the directory specified by `results_dir` in `config.yaml`. Key outputs include:
    - `case_control_pairs.txt`: Matched case-control pairs
-   - `{output_prefix}.counts_and_pval.txt` (or `_phewas_results.tsv`): Phecode enrichment or PheWAS results
+   - `{output_prefix}.counts_and_pval.txt` (or `_phewas_results.tsv`): Permutation enrichment results or raw Phe-PheWAS regression results
    - `{trait}_{output_prefix}_enriched_phecode.csv` (or `_phewas_enriched_phecode.csv`): Enriched phecodes
    - `PheML_{output_prefix}.model`: Trained model
 
 ## Feature Selection Methods
 The pipeline supports two methods for identifying significant phecodes to use as features, configurable via `feature_selection_method` in `config.yaml`:
 - **Enrichment** (`enrichment`): Uses permutation testing to calculate significance between cases and controls.
-- **PheWAS** (`phewas`): Uses the PheTK package to run a phenotype-to-phenome scan, treating the matched case phenotype as the exposure and identifying associated phecodes across the phenome.
+- **PheWAS** (`phewas`): Runs `src/phe_phewas_feature_selection.py`, a local Polars + sklearn phenotype-to-phenome scan that treats the matched case phenotype as the exposure and fits one logistic model per phecode outcome.
 
 ## Machine Learning Models
 The pipeline currently supports the following machine learning models, which can be selected via the `model_type` parameter in `config.yaml`:
