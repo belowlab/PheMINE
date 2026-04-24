@@ -126,12 +126,5 @@ interpret_model(
 )
 ```
 
-## Contributing
-[Add contribution guidelines here]
 
-## License
-This project is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).  
-You are free to use, share, and adapt this work for non-commercial purposes, provided you give appropriate credit.  
-For more details, see [https://creativecommons.org/licenses/by-nc/4.0/](https://creativecommons.org/licenses/by-nc/4.0/).
 
-If you wish to use this project for commercial purposes, please contact the authors for permission.
