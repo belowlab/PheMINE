@@ -46,7 +46,7 @@ def plot_CM(
             cmap=plt.cm.Blues,
         )
     p = precision_score(y, model.predict(X))
-    disp.ax_.set_title(f'Confusion Matrix of {trait} Prediction Model (Precision: {p:.2f}')
+    disp.ax_.set_title(f'Confusion Matrix of {trait} Prediction Model')
     plt.savefig(output_path / f'{prefix}_{model_type}_CM.png', bbox_inches='tight')
     return p
 
