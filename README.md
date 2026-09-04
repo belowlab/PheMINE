@@ -1,6 +1,16 @@
 # PheMINE
 
-![PheMINE Logo](assets/logo.png)
+<p align="center">
+  <img src="assets/logo.png" alt="PheMINE Logo">
+</p>
+
+<p align="center">
+  <a href="https://doi.org/10.5281/zenodo.22307820"><img src="https://zenodo.org/badge/1167800392.svg" alt="DOI"></a>
+  <a href="https://github.com/belowlab/PheMINE/tags"><img src="https://img.shields.io/github/v/tag/belowlab/PheMINE?label=version" alt="Version"></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.11-blue.svg" alt="Python"></a>
+  <a href="https://snakemake.readthedocs.io/"><img src="https://img.shields.io/badge/snakemake-%E2%89%A59.0-brightgreen.svg" alt="Snakemake"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
 
 PheMINE is a fully automated, modular pipeline for conducting phenome-wide enrichment studies and machine-learning–based phenotype prediction. Built with Snakemake for workflow orchestration and Python for data processing and modeling, the system provides a reproducible and scalable framework for exploring clinical phenotypes derived from ICD and phecode mappings.
 
